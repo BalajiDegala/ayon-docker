@@ -33,3 +33,33 @@ To deploy these demo projects to your server, run:
 
 *NOTE: These demo projects can take a while to create.*
 
+Keycloak SSO
+------------
+
+This compose file includes an optional **Keycloak** service. It is started on
+port `8080` and uses its own PostgreSQL instance. The default administrator
+credentials are `admin` / `changeme`.
+
+### Example Keycloak setup
+
+1. Browse to `http://localhost:8080` and log in as the Keycloak admin.
+2. Create a realm (for example `ayon`).
+3. Under that realm create a new *client* named `ayon` with `confidential`
+   access type. Set the redirect URI to `http://localhost:5000/*` and save the
+   generated client secret.
+
+### Enabling SSO in Ayon
+
+Set the following variables in the `server` service (they are already present
+in the compose file):
+
+```yaml
+  KEYCLOAK_CLIENT_ID: ayon
+  KEYCLOAK_CLIENT_SECRET: <secret from Keycloak>
+  KEYCLOAK_ISSUER_URL: http://keycloak:8080/realms/ayon
+```
+
+After updating the values run `docker compose up -d` again. On restart the
+frontend will offer a "Login with Keycloak" option and the backend will accept
+tokens issued by the configured realm.
+
