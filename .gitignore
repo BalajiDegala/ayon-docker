@@ -1,4 +1,6 @@
 addons/*
+!addons/keycloak/
+!addons/keycloak/**
 storage/
 RELEASE
 
