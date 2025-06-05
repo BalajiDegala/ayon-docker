@@ -16,7 +16,6 @@ import remarkGfm from 'remark-gfm'
 const clearQueryParams = () => {
   const url = new URL(window.location)
   url.search = ''
-  console.log('clearQueryParams', url.href)
   history.pushState({}, '', url.href)
 }
 
@@ -83,6 +82,14 @@ const LoginPage = ({ isFirstTime = false }) => {
 
       if (!providerConfig) {
         return
+      }
+
+      // include the redirect URI for the OAuth callback
+      if (providerConfig.redirectKey) {
+        qs.append(
+          providerConfig.redirectKey,
+          `${window.location.origin}/login/${provider}`,
+        )
       }
 
       setIsLoading(true)
