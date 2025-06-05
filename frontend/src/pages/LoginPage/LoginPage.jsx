@@ -16,7 +16,6 @@ import remarkGfm from 'remark-gfm'
 const clearQueryParams = () => {
   const url = new URL(window.location)
   url.search = ''
-  console.log('clearQueryParams', url.href)
   history.pushState({}, '', url.href)
 }
 
