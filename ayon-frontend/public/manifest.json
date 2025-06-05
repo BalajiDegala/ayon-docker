@@ -1,0 +1,10 @@
+{
+  "short_name": "Ayon",
+  "name": "Ayon server",
+  "icons": [
+  ],
+  "start_url": ".",
+  "display": "standalone",
+  "theme_color": "#2c313a",
+  "background_color": "#00d6a1"
+}
