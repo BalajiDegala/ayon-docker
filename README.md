@@ -45,8 +45,11 @@ Configure the addon via the following environment variables or addon settings:
 
 Set these variables when launching the container or define them in the addon settings page to enable Keycloak authentication.
 
-`KEYCLOAK_URL` must be reachable from inside the AYON container. When running
-Keycloak on the host machine, use `http://host.docker.internal:<port>` on
-Docker Desktop or add an `extra_hosts: ["host.docker.internal:host-gateway"]`
-entry (or your host IP address) when using Linux.
 
+
+Alternatively, you can run Keycloak as part of the provided compose stack. The
+`docker-compose.yml` file defines `keycloak` and `keycloak-db` services suitable
+for production. In this setup, set `KEYCLOAK_URL` to `http://keycloak:8080` so
+that the server can reach Keycloak on the internal Docker network.
+
+=======
