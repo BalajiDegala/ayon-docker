@@ -50,8 +50,15 @@ class KeycloakAddon(BaseServerAddon):
                 "client_secret": settings.client_secret,
             }
 
-            async with httpx.AsyncClient(timeout=ayonconfig.http_timeout) as client:
-                resp = await client.post(token_url, data=data)
+            try:
+                async with httpx.AsyncClient(timeout=ayonconfig.http_timeout) as client:
+                    resp = await client.post(token_url, data=data)
+            except httpx.RequestError:
+                logger.error("Keycloak server unreachable")
+                raise HTTPException(
+                    status_code=status.HTTP_502_BAD_GATEWAY,
+                    detail="Keycloak server unreachable",
+                )
             try:
                 resp.raise_for_status()
             except httpx.HTTPStatusError:
@@ -63,8 +70,18 @@ class KeycloakAddon(BaseServerAddon):
                 raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Token missing")
 
             userinfo_url = f"{settings.url}/realms/{settings.realm}/protocol/openid-connect/userinfo"
-            async with httpx.AsyncClient(timeout=ayonconfig.http_timeout) as client:
-                uresp = await client.get(userinfo_url, headers={"Authorization": f"Bearer {token}"})
+            try:
+                async with httpx.AsyncClient(timeout=ayonconfig.http_timeout) as client:
+                    uresp = await client.get(
+                        userinfo_url,
+                        headers={"Authorization": f"Bearer {token}"},
+                    )
+            except httpx.RequestError:
+                logger.error("Keycloak server unreachable")
+                raise HTTPException(
+                    status_code=status.HTTP_502_BAD_GATEWAY,
+                    detail="Keycloak server unreachable",
+                )
             try:
                 uresp.raise_for_status()
             except httpx.HTTPStatusError:
