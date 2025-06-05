@@ -33,3 +33,15 @@ To deploy these demo projects to your server, run:
 
 *NOTE: These demo projects can take a while to create.*
 
+### Keycloak SSO Addon
+
+The repository includes an optional Keycloak addon providing single sign‑on support.
+Configure the addon via the following environment variables or addon settings:
+
+- `KEYCLOAK_URL` – Base URL of the Keycloak server.
+- `KEYCLOAK_REALM` – Keycloak realm to authenticate against.
+- `KEYCLOAK_CLIENT_ID` – OAuth client identifier.
+- `KEYCLOAK_CLIENT_SECRET` – OAuth client secret.
+
+Set these variables when launching the container or define them in the addon settings page to enable Keycloak authentication.
+

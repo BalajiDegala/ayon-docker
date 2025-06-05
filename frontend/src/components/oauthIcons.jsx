@@ -39,11 +39,25 @@ const SlackIcon = () => (
   </svg>
 )
 
+const KeycloakIcon = () => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width="16"
+    height="16"
+    fill="#FFF"
+    className="oauth-icon"
+    viewBox="0 0 24 24"
+  >
+    <path d="M3 12L0 9l9-9h6l9 9-3 3-6-6h-6zM3 12l9 9 9-9-3-3-6 6-6-6z" />
+  </svg>
+)
+
 const OAuth2ProviderIcon = ({ name }) => {
   const data = {
     discord: <DiscordIcon />,
     slack: <SlackIcon />,
     google: <GoogleIcon />,
+    keycloak: <KeycloakIcon />,
   }
   if (name.toLowerCase() in data) return data[name.toLowerCase()]
   return null
