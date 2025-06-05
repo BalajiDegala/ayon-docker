@@ -85,6 +85,14 @@ const LoginPage = ({ isFirstTime = false }) => {
         return
       }
 
+      // include the redirect URI for the OAuth callback
+      if (providerConfig.redirectKey) {
+        qs.append(
+          providerConfig.redirectKey,
+          `${window.location.origin}/login/${provider}`,
+        )
+      }
+
       setIsLoading(true)
       axios
         .get(providerConfig.callback, { params: qs })
