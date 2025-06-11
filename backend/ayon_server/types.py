@@ -73,8 +73,9 @@ NAME_REGEX = r"^[a-zA-Z0-9_]([a-zA-Z0-9_\.\-]*[a-zA-Z0-9_])?$"
 STATUS_REGEX = r"^[a-zA-Z0-9_][a-zA-Z0-9_ \-]{1,64}[a-zA-Z0-9_]$"
 TYPE_NAME_REGEX = r"^[a-zA-Z0-9_][a-zA-Z0-9_ \-]{1,64}[a-zA-Z0-9_]$"
 
-# user names shouldn't start or end with underscores
-USER_NAME_REGEX = r"^[a-zA-Z0-9][a-zA-Z0-9_\.\-]*[a-zA-Z0-9]$"
+# user names shouldn't start or end with spaces or special characters
+# allow spaces and '@' inside the name
+USER_NAME_REGEX = r"^[a-zA-Z0-9][a-zA-Z0-9_.@\- ]*[a-zA-Z0-9]$"
 
 # project name cannot contain - / . (sql hard limit for schema names)
 PROJECT_NAME_REGEX = r"^[a-zA-Z0-9_]*$"
@@ -98,6 +99,7 @@ def validate_name(name: str, regex: str = NAME_REGEX) -> str:
 
 def validate_user_name(name: str) -> str:
     """Validate user name."""
+    name = name.strip()
     if not re.match(USER_NAME_REGEX, name):
         raise BadRequestException(
             f"User name '{name}' does not match regex '{USER_NAME_REGEX}'"
