@@ -81,12 +81,14 @@ class PasswordAuth:
         if email is None and "@" in identifier:
             email = identifier
 
+        result = None
         if email:
             result = await Postgres.fetch(
-                "SELECT * FROM public.users WHERE LOWER(attrib->>'email') = $1",
-                email.lower(),
+                "SELECT * FROM public.users WHERE LOWER(attrib->>'email') = LOWER($1)",
+                email,
             )
-        else:
+
+        if not result:
             result = await Postgres.fetch(
                 "SELECT * FROM public.users WHERE name ilike $1",
                 identifier,
