@@ -23,7 +23,7 @@ const LoginPage = ({ isFirstTime = false }) => {
   // get query params from url
   const search = new URLSearchParams(window.location.search)
   const dispatch = useDispatch()
-  const [name, setName] = useState('')
+  const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
 
   // which methods are featured (all others are hidden)
@@ -137,7 +137,7 @@ const LoginPage = ({ isFirstTime = false }) => {
 
   const doLogin = async () => {
     axios
-      .post('/api/auth/login', { name, password })
+      .post('/api/auth/login', { email, password })
       .then((response) => {
         if (response.data.user) {
           // clear local storage
@@ -161,8 +161,8 @@ const LoginPage = ({ isFirstTime = false }) => {
   const handleSubmit = (e) => {
     e.preventDefault()
 
-    if (!(name && password)) {
-      toast.error('Please enter username and password to login')
+    if (!(email && password)) {
+      toast.error('Please enter email and password to login')
     } else {
       doLogin()
     }
@@ -188,14 +188,14 @@ const LoginPage = ({ isFirstTime = false }) => {
           <Styled.Methods>
             {showPasswordLogin && (
               <form onSubmit={handleSubmit}>
-                <label id="username">Username</label>
+                <label id="email">Email</label>
                 <InputText
                   autoFocus
-                  placeholder="Enter your username"
-                  name="username"
-                  aria-label="Username"
-                  value={name}
-                  onChange={(e) => setName(e.target.value)}
+                  placeholder="Enter your email"
+                  name="email"
+                  aria-label="Email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
                 />
                 <label id="password">Password</label>
                 <InputPassword
