@@ -61,9 +61,10 @@ class PasswordAuth:
     @classmethod
     async def login(
         cls,
-        name: str,
+        identifier: str,
         password: str,
         request: Request | None = None,
+        email: str | None = None,
     ) -> SessionModel:
         """Login using username/password credentials.
 
@@ -75,13 +76,21 @@ class PasswordAuth:
         if request is not None:
             await check_failed_login(get_real_ip(request))
 
-        name = name.strip()
+        identifier = identifier.strip()
 
-        # name active attrib data
+        if email is None and "@" in identifier:
+            email = identifier
 
-        result = await Postgres.fetch(
-            "SELECT * FROM public.users WHERE name ilike $1", name
-        )
+        if email:
+            result = await Postgres.fetch(
+                "SELECT * FROM public.users WHERE LOWER(attrib->>'email') = $1",
+                email.lower(),
+            )
+        else:
+            result = await Postgres.fetch(
+                "SELECT * FROM public.users WHERE name ilike $1",
+                identifier,
+            )
         if not result:
             raise ForbiddenException("Invalid login/password combination")
 

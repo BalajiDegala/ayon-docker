@@ -78,7 +78,9 @@ export type HttpValidationError = {
 }
 export type LoginRequestModel = {
   /** Username */
-  name: string
+  name?: string
+  /** Email address */
+  email?: string
   /** Password */
   password: string
 }
