@@ -82,8 +82,16 @@ RUN apt-get update && \
     libgnutls-openssl27 \
     postgresql-client \
     procps \
-    && apt-get clean \
-    && rm -rf /var/lib/apt/lists/*
+    ca-certificates && \
+  apt-get clean && \
+  rm -rf /var/lib/apt/lists/*
+
+
+COPY tls.crt /usr/local/share/ca-certificates/ayon.crt
+RUN update-ca-certificates
+
+ENV SSL_CERT_FILE=/etc/ssl/certs/ca-certificates.crt
+
 
 COPY --from=build-ffmpeg /usr/local/bin/ffmpeg /usr/local/bin/ffmpeg
 COPY --from=build-ffmpeg /usr/local/bin/ffprobe /usr/local/bin/ffprobe
